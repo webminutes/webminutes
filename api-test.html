@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <title>API Test – WebMinutes</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .api-test-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .api-test-header {
+      margin-bottom: 32px;
+    }
+    .api-test-header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .api-test-header p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+    .endpoint-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card-bg, #1a1f2e);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .method-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .endpoint-url {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      word-break: break-all;
+      flex: 1;
+    }
+    .btn-test {
+      flex-shrink: 0;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      min-height: 32px;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border, #444);
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .status-dot.loading {
+      background: #f59e0b;
+      animation: pulse-dot 1s infinite;
+    }
+    .status-dot.success {
+      background: #22c55e;
+    }
+    .status-dot.error {
+      background: #ef4444;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .status-text {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    .result-block {
+      background: var(--card-bg, #1a1f2e);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .result-block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    .result-body {
+      padding: 18px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 480px;
+      overflow-y: auto;
+      color: var(--text, #e2e8f0);
+    }
+    .result-placeholder {
+      color: var(--text-light);
+      font-style: italic;
+    }
+    .meta-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .meta-chip {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border, rgba(255,255,255,0.1));
+      color: var(--text-light);
+    }
+    .meta-chip span {
+      color: var(--text);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/img/webminutes-logo.png" alt="WebMinutes" class="nav-logo-img" />
+      </a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item">
+          <a href="services.html" class="nav-link" data-dropdown="true">Services <span class="chevron">▾</span></a>
+          <div class="dropdown">
+            <a href="services.html">All Services</a>
+            <a href="services/landing-page.html">Landing Page</a>
+            <a href="services/ecommerce.html">E-commerce</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="about.html" class="nav-link" data-dropdown="true">About <span class="chevron">▾</span></a>
+          <div class="dropdown">
+            <a href="about.html">Company Overview</a>
+            <a href="about/vision.html">Vision &amp; Strategy</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="market.html" class="nav-link">Market</a></li>
+        <li class="nav-item"><a href="contact.html" class="nav-link nav-cta">Get a Quote</a></li>
+      </ul>
+      <div class="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="api-test-wrap">
+    <div class="api-test-header">
+      <div class="eyebrow">Internal Tool</div>
+      <h1>API Connection Test</h1>
+      <p>Test live connectivity to the WebMinutes API endpoints.</p>
+    </div>
+
+    <div class="endpoint-box">
+      <span class="method-badge">GET</span>
+      <span class="endpoint-url">https://api.webminutes.it.com/users</span>
+      <button class="btn btn-primary btn-test" id="btnTest">Run Test</button>
+    </div>
+
+    <div class="status-row">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-text" id="statusText">Ready — click Run Test to begin.</span>
+    </div>
+
+    <div class="meta-chips" id="metaChips" style="display:none;">
+      <div class="meta-chip">Status <span id="metaStatus">—</span></div>
+      <div class="meta-chip">Time <span id="metaTime">—</span></div>
+      <div class="meta-chip">Size <span id="metaSize">—</span></div>
+    </div>
+
+    <div class="result-block">
+      <div class="result-block-head">
+        <span>Response</span>
+        <button id="btnCopy" style="display:none;background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.8rem;">Copy</button>
+      </div>
+      <div class="result-body" id="resultBody">
+        <span class="result-placeholder">No response yet.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/img/webminutes-logo.png" alt="WebMinutes" class="footer-logo-img" />
+          <p>WebMinutes is an AI-assisted web agency delivering professional websites in 1–3 days. Affordable, fast, and built for the modern SME.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="services.html">All Services</a></li>
+            <li><a href="services/landing-page.html">Landing Page</a></li>
+            <li><a href="services/ecommerce.html">E-commerce</a></li>
+            <li><a href="services.html#maintenance">Maintenance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="about/vision.html">Vision &amp; Strategy</a></li>
+            <li><a href="market.html">Target Market</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Get Started</h5>
+          <ul>
+            <li><a href="contact.html">Free Quote</a></li>
+            <li><a href="contact.html">Request Demo</a></li>
+            <li><a href="market.html">Why WebMinutes</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 WebMinutes. All rights reserved.</p>
+        <p class="footer-tagline">"Build Better Websites. Faster." — WebMinutes</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site-scripts.js"></script>
+  <script>
+    const API_URL = 'https://api.webminutes.it.com/users';
+
+    const btnTest   = document.getElementById('btnTest');
+    const statusDot  = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const resultBody = document.getElementById('resultBody');
+    const metaChips  = document.getElementById('metaChips');
+    const metaStatus = document.getElementById('metaStatus');
+    const metaTime   = document.getElementById('metaTime');
+    const metaSize   = document.getElementById('metaSize');
+    const btnCopy    = document.getElementById('btnCopy');
+
+    function setStatus(state, text) {
+      statusDot.className = 'status-dot ' + state;
+      statusText.textContent = text;
+    }
+
+    async function runTest() {
+      btnTest.disabled = true;
+      btnTest.textContent = 'Testing…';
+      metaChips.style.display = 'none';
+      btnCopy.style.display = 'none';
+      resultBody.innerHTML = '<span class="result-placeholder">Fetching…</span>';
+      setStatus('loading', 'Connecting to API…');
+
+      const t0 = performance.now();
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json, text/html, */*',
+          },
+        });
+
+        const elapsed = Math.round(performance.now() - t0);
+        const raw = await res.text();
+
+        let display;
+        try {
+          const json = JSON.parse(raw);
+          display = JSON.stringify(json, null, 2);
+        } catch {
+          display = raw;
+        }
+
+        metaStatus.textContent = res.status + ' ' + res.statusText;
+        metaTime.textContent = elapsed + ' ms';
+        metaSize.textContent = new Blob([raw]).size + ' B';
+        metaChips.style.display = 'flex';
+
+        if (res.ok) {
+          setStatus('success', 'Connected — ' + res.status + ' ' + res.statusText);
+        } else {
+          setStatus('error', 'API returned ' + res.status + ' ' + res.statusText);
+        }
+
+        resultBody.textContent = display || '(empty body)';
+        btnCopy.style.display = 'inline-block';
+
+      } catch (err) {
+        const elapsed = Math.round(performance.now() - t0);
+        setStatus('error', 'Request failed — ' + err.message);
+        metaTime.textContent = elapsed + ' ms';
+        metaStatus.textContent = 'Network Error';
+        metaSize.textContent = '—';
+        metaChips.style.display = 'flex';
+        resultBody.textContent = err.toString();
+        btnCopy.style.display = 'inline-block';
+      } finally {
+        btnTest.disabled = false;
+        btnTest.textContent = 'Run Test';
+      }
+    }
+
+    btnTest.addEventListener('click', runTest);
+
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(resultBody.textContent).then(() => {
+        const orig = btnCopy.textContent;
+        btnCopy.textContent = 'Copied!';
+        setTimeout(() => { btnCopy.textContent = orig; }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
