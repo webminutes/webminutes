@@ -1,0 +1,16 @@
+  File "/home/webmyqog/api/passenger_wsgi.py", line 9
+    application = wsgi.app:app
+                          ^
+SyntaxError: invalid syntax
+  File "/home/webmyqog/api/passenger_wsgi.py", line 9
+    application = wsgi.app:app
+                          ^
+SyntaxError: invalid syntax
+  File "/home/webmyqog/api/passenger_wsgi.py", line 9
+    application = wsgi.app:app
+                          ^
+SyntaxError: invalid syntax
+  File "/home/webmyqog/api/passenger_wsgi.py", line 9
+    application = wsgi.app:app
+                          ^
+SyntaxError: invalid syntax
